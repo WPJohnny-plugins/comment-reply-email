@@ -323,7 +323,7 @@ class comment_reply_email{
 		</p>
 		<p><?php _e('Use only TEXT, or the following tags:','comment-reply-email'); ?></p>
 		<ul>
-			<li><code>[blogname]</code> for blog name and</li>
+			<li><code>[blogname]</code> for blog name</li>
 			<li><code>[postname]</code> for comment post name</li>
 		</ul>
 		<hr>
