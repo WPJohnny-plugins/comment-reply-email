@@ -297,52 +297,67 @@ class comment_reply_email{
 ?>
 
 <div class="wrap">
-	<style type="text/css">
-		.cre-button {
-			background-color: #ffcd00;
-			border: none;
-			padding: 5px 20px;
-			border-radius: 3px;
-			font-weight: 700;
-		}
-	</style>
 
 	<h1>Comment Reply Email</h1>
 	<form method="post" action="">
-		<fieldset name="wp_basic_options"  class="options">
-		<h3><?php _e('Send comment reply emails to commenters:','comment-reply-email'); ?></h3>
+		<h2 class="title"><?php _e('Send comment reply emails to commenters:','comment-reply-email'); ?></h2>
 		<p>
 			<input type="radio" name="mail_notify" id="do_none" value="none" <?php if ($this->options['mail_notify'] !== 'admin' || $this->options['mail_notify'] !== 'everyone') { ?> checked="checked"<?php } ?>/><label><?php _e('DISABLED - no emails sent.','comment-reply-email'); ?></label>
-			<br />
-			<input type="radio" name="mail_notify" id="do_admin" value="admin" <?php if ($this->options['mail_notify'] === 'admin') { ?> checked="checked"<?php } ?>/><label><?php _e('ADMIN - only for post author or admin replies. No checkbox shown.','comment-reply-email'); ?></label>
-			<br />
-			<input type="radio" name="mail_notify" id="do_everyone" value="everyone" <?php if ($this->options['mail_notify'] === 'everyone') { ?> checked="checked"<?php } ?>/><label><?php _e('ALL - if anyone replies. No checkbox shown.','comment-reply-email'); ?></label>
-			<br />
-			<input type="radio" name="mail_notify" id="do_parent_check" value="parent_check" <?php if ($this->options['mail_notify'] === 'parent_check') { ?> checked="checked"<?php } ?>/><label><?php _e('OPT-IN CHECKED - if parent commenter checks the box (default checked).','comment-reply-email'); ?></label>
-			<br />
-			<input type="radio" name="mail_notify" id="do_parent_uncheck" value="parent_uncheck" <?php if ($this->options['mail_notify'] === 'parent_uncheck') { ?> checked="checked"<?php } ?>/><label><?php _e('OPT-IN UNCHECKED - if parent commenter checks the box (default unchecked).','comment-reply-email'); ?></label>
-			<br />
 		</p>
-		<h3><?php _e('Reply email SUBJECT:','comment-reply-email'); ?></h3>
-		<p><input type="text" name="mail_subject" id="mail_subject" value="<?php echo $this->options['mail_subject']; ?>" size="80" /></p>
-		<p><?php _e('Use only TEXT, or the following tags: <ul style="list-style:disc;margin-left:20px;"><li><strong>[blogname]</strong> for blog name and </li><li><strong>[postname]</strong> for comment post name</li></ul>','comment-reply-email'); ?></p>
-		<h3><?php _e('Reply email MESSAGE:','comment-reply-email'); ?></h3>
-		<p><textarea name="mail_message" id="mail_message" cols="100%" rows="10" ><?php echo $this->options['mail_message']; ?></textarea></p>
-		<p><?php _e('Use only TEXT, HTML, or the following tags: <ul style="list-style:disc;margin-left:20px;"><li><strong>[pc_author]</strong> for parent comment author</li><li><strong>[pc_date]</strong> for parent comment date</li><li><strong>[pc_content]</strong> for parent comment content</li><li><strong>[cc_author]</strong> for child comment author</li><li><strong>[cc_date]</strong> for child comment date</li><li><strong>[cc_url]</strong> for child comment author url</li><li><strong>[cc_content]</strong> for child comment content</li><li><strong>[commentlink]</strong> for parent comment link</li><li><strong>[blogname]</strong> for blog name</li><li><strong>[blogurl]</strong> for blog url</li><li><strong>[postname]</strong> for post name</li></ul>','comment-reply-email'); ?></p>
-		<h3><?php _e('Delete plugin options after deactivation?','comment-reply-email'); ?></h3>
 		<p>
-			<label><?php _e('YES','comment-reply-email'); ?></label>
+			<input type="radio" name="mail_notify" id="do_admin" value="admin" <?php if ($this->options['mail_notify'] === 'admin') { ?> checked="checked"<?php } ?>/><label><?php _e('ADMIN - only for post author or admin replies. No checkbox shown.','comment-reply-email'); ?></label>
+		</p>
+		<p>
+			<input type="radio" name="mail_notify" id="do_everyone" value="everyone" <?php if ($this->options['mail_notify'] === 'everyone') { ?> checked="checked"<?php } ?>/><label><?php _e('ALL - if anyone replies. No checkbox shown.','comment-reply-email'); ?></label>
+		</p>
+		<p>
+			<input type="radio" name="mail_notify" id="do_parent_check" value="parent_check" <?php if ($this->options['mail_notify'] === 'parent_check') { ?> checked="checked"<?php } ?>/><label><?php _e('OPT-IN CHECKED - if parent commenter checks the box (default checked).','comment-reply-email'); ?></label>
+		</p>
+		<p>
+			<input type="radio" name="mail_notify" id="do_parent_uncheck" value="parent_uncheck" <?php if ($this->options['mail_notify'] === 'parent_uncheck') { ?> checked="checked"<?php } ?>/><label><?php _e('OPT-IN UNCHECKED - if parent commenter checks the box (default unchecked).','comment-reply-email'); ?></label>
+		</p>
+		<hr>
+		<h2 class="title"><?php _e('Reply email SUBJECT:','comment-reply-email'); ?></h2>
+		<p>
+			<input type="text" name="mail_subject" id="mail_subject" value="<?php echo $this->options['mail_subject']; ?>" size="80" />
+		</p>
+		<p><?php _e('Use only TEXT, or the following tags:','comment-reply-email'); ?></p>
+		<ul>
+			<li><code>[blogname]</code> for blog name and</li>
+			<li><code>[postname]</code> for comment post name</li>
+		</ul>
+		<hr>
+		<h2 class="title"><?php _e('Reply email MESSAGE:','comment-reply-email'); ?></h2>
+		<p>
+			<textarea name="mail_message" id="mail_message" cols="100%" rows="10" ><?php echo $this->options['mail_message']; ?></textarea>
+		</p>
+		<p><?php _e('Use only TEXT, HTML, or the following tags:','comment-reply-email'); ?></p>
+		<ul>
+			<li><code>[pc_author]</code> for parent comment author</li>
+			<li><code>[pc_date]</code> for parent comment date</li>
+			<li><code>[pc_content]</code> for parent comment content</li>
+			<li><code>[cc_author]</code> for child comment author</li>
+			<li><code>[cc_date]</code> for child comment date</li>
+			<li><code>[cc_url]</code> for child comment author url</li>
+			<li><code>[cc_content]</code> for child comment content</li>
+			<li><code>[commentlink]</code> for parent comment link</li>
+			<li><code>[blogname]</code> for blog name</li>
+			<li><code>[blogurl]</code> for blog url</li>
+			<li><code>[postname]</code> for post name</li>
+		</ul>
+		<hr>
+		<h2 class="title"><?php _e('Plugin options','comment-reply-email'); ?></h2>
+		<p>
 			<input type="checkbox" name="clean_option" id="clean_option" value="yes" <?php if ($this->options['clean_option'] === 'yes') { ?> checked="checked"<?php } ?>/>
+			<label><?php _e('Delete plugin options after deactivation?','comment-reply-email'); ?></label>
 		</p>
 		<p class="submit">
-			<input type="submit" class="cre-button" name="updateoptions" value="<?php _e('Update Options','comment-reply-email'); ?> &raquo;" />
-			<input type="submit" class="cre-button" name="reset_options" onclick="return confirm('<?php _e('Do you really want to reset your current configuration?','comment-reply-email'); ?>');" value="<?php _e('Reset Options','comment-reply-email'); ?>" />
+			<input type="submit" class="button button-primary" name="updateoptions" value="<?php _e('Update Options','comment-reply-email'); ?>" />
+			<input type="submit" class="button button-secondary" name="reset_options" onclick="return confirm('<?php _e('Do you really want to reset your current configuration?','comment-reply-email'); ?>');" value="<?php _e('Reset Options','comment-reply-email'); ?>" />
 		</p>
-		</fieldset>
 	</form>
 	
 	<p>Like this plugin? You can <a href="https://paypal.me/wpjohnny">buy me a beer</a> or leave a 5-star review.</p>
-  </div>
 </div>
 <?php
 	}
