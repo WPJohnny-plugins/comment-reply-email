@@ -115,9 +115,9 @@ class comment_reply_email{
 		if((int) mysqli_real_escape_string($con, $_POST['comment_parent']) === 0 || (int) mysqli_real_escape_string($con, $_POST['comment_post_ID']) === 0){
 			$sendemail = 0;			
 			if (isset($_POST['action']) && $_POST['action'] == 'replyto-comment' && isset($_POST['comment_ID'])) {
-				$id_parent = $_POST['comment_ID'];
+				$id_parent = absint($_POST['comment_ID']);
 				if($this->options['mail_notify'] === 'parent_check'){
-					$request = $wpdb->get_row("SELECT comment_mail_notify FROM $wpdb->comments WHERE comment_ID='$id_parent'");
+					$request = $wpdb->get_row($wpdb->prepare("SELECT comment_mail_notify FROM $wpdb->comments WHERE comment_ID=%s", $id_parent));
 					$sendemail = $request->comment_mail_notify;
 				} else {
 					$sendemail = 1;
@@ -126,11 +126,11 @@ class comment_reply_email{
 			if ($sendemail == 0) {
 				return $id;
 			}
-			$comment_parent = mysqli_real_escape_string($con, $_POST['comment_ID']);
-			$comment_post = mysqli_real_escape_string($con, $_POST['comment_post_ID']);
+			$comment_parent = mysqli_real_escape_string($con, absint($_POST['comment_ID']));
+			$comment_post = mysqli_real_escape_string($con, absint($_POST['comment_post_ID']));
 		} else {
-			$comment_parent = mysqli_real_escape_string($con, $_POST['comment_parent']);
-			$comment_post = mysqli_real_escape_string($con, $_POST['comment_post_ID']);
+			$comment_parent = mysqli_real_escape_string($con, absint($_POST['comment_parent']));
+			$comment_post = mysqli_real_escape_string($con, absint($_POST['comment_post_ID']));
 		}
 		
 		if($this->options['mail_notify'] != 'none'){
