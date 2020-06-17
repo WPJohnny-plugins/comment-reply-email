@@ -357,7 +357,7 @@ class comment_reply_email{
 		</p>
 	</form>
 	
-	<p>Like this plugin? You can <a href="https://paypal.me/wpjohnny">buy me a beer</a> or leave a 5-star review.</p>
+	<p>Like this plugin? You can <a href="https://paypal.me/wpjohnny">buy me a beer</a> or <a href="https://wordpress.org/plugins/comment-reply-email/">leave a 5-star review</a>.</p>
 </div>
 <?php
 	}
