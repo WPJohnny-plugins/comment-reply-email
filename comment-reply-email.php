@@ -364,36 +364,5 @@ class comment_reply_email{
 }
 endif;
 
-/*
-if(!function_exists('wpjam_modify_dashboard_widgets')){
-	
-	add_action('wp_dashboard_setup', 'wpjam_modify_dashboard_widgets' );
-	function wpjam_modify_dashboard_widgets() {
-		global $wp_meta_boxes;
-		if( strpos(WPLANG, 'zh_') === false){
-			wp_add_dashboard_widget('wpjam_dashboard_widget', 'Theme10', 'wpjam_dashboard_widget_function');
-		}else{
-			wp_add_dashboard_widget('wpjam_dashboard_widget', '我爱水煮鱼', 'wpjam_dashboard_widget_function');
-		}
-	}
-	
-	function wpjam_dashboard_widget_function() {
-		if( strpos(WPLANG, 'zh_') === false){
-			echo '<div class="rss-widget">';
-			wp_widget_rss_output('http://theme10.com/feed/', array( 'show_author' => 0, 'show_date' => 1, 'show_summary' => 0 ));
-			echo "</div>";
-		}else{
-		?>
-		<p><a href="http://wpjam.com/&amp;utm_medium=wp-plugin&amp;utm_campaign=wp-plugin&amp;utm_source=<?php bloginfo('home');?>" title="WordPress JAM" target="_blank"><img src="http://wpjam.com/wp-content/themes/WPJ-Parent/images/logo_index_1.png" alt="WordPress JAM"></a><br />
-        <a href="http://wpjam.com/&amp;utm_medium=wp-plugin&amp;utm_campaign=wp-plugin&amp;utm_source=<?php bloginfo('home');?>" title="WordPress JAM" target="_blank"> WordPress JAM</a> 是中国最好的 WordPress 二次开发团队，我们精通 WordPress，可以制作 WordPress 主题，开发 WordPress 插件，WordPress 整站优化。</p>
-        <hr />
-	<?php 
-		echo '<div class="rss-widget">';
-		wp_widget_rss_output('http://fairyfish.net/feed/', array( 'show_author' => 0, 'show_date' => 1, 'show_summary' => 0 ));
-		echo "</div>";
-		}
-	}
-} */
-
 $new_comment_reply_email = new comment_reply_email();
 ?>
