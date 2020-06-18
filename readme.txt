@@ -49,6 +49,6 @@ With CSS of course! It shouldn't take any developer more than 15 minutes of time
 
 Initial Commit. Updated to work with PHP 7.x (fixed mysqli escape strings), improved wording, admin settings styling. Unfortunately had to delete old translator files.
 
-Was forked from version 1.4 of Denishua's original [Comment Reply Email](https://wordpress.org/plugins/comment-reply-email/)...his version logs are below.
+Was forked from version 1.4 of Denishua's original [Comment Reply Notfication](https://wordpress.org/plugins/comment-reply-notification/).
 
 1.0.0 Initial release
