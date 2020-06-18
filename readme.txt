@@ -43,6 +43,11 @@ Not unless someone wanted to pay for my development time and costs. This was int
 = How do I style the text and checkbox? =
 With CSS of course! It shouldn't take any developer more than 15 minutes of time.
 
+== Screenshots ==
+1. Checkbox opt-in on frontend.
+2. Settings screen 1 of 2.
+3. Setting screen 2 of 2.
+
 == Changelog ==
 
 = 1.0 =
