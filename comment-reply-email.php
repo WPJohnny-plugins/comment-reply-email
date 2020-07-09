@@ -33,7 +33,7 @@ class comment_reply_email{
 		}elseif($key === 'mail_subject'){
 			return __('Your comment at [blogname] has a new reply','comment-reply-email');
 		}elseif($key === 'mail_message'){
-			return __("<p><strong>[pc_author]</strong>,</p><p>Your comment on <strong>[postname]</strong> has a new reply by [cc_author]:</p>\n<p>[cc_content]</p>\n<p>Your original comment:<br />\n[pc_content]</p>\n<p>Comment link:<br />\n<a href=\"[commentlink]\">[commentlink]</a></p>\n<p><strong>This is a system message. Please don't reply to this email.</strong></p>",'comment-reply-email');
+			return __("<p><strong>[pc_author]</strong>,</p><p></p><p>Your comment on <strong>[postname]</strong> has a new reply by [cc_author]:</p>\n<p>[cc_content]</p><p></p>\n<p>Your original comment:<br />\n[pc_content]</p><p></p>\n<p>Comment link:<br />\n<a href=\"[commentlink]\">[commentlink]</a></p><p></p>\n<p><strong>This is a system message. Please don't reply to this email.</strong></p>",'comment-reply-email');
 		}elseif($key === 'clean_option'){
 			return 'no';
 		}elseif($key === 'dn_hide_note'){
