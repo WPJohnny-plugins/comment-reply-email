@@ -50,6 +50,10 @@ With CSS of course! It shouldn't take any developer more than 15 minutes of time
 
 == Changelog ==
 
+= 1.1 =
+
+Added more line-breaks to the default notfication email template.
+
 = 1.0 =
 
 Initial Commit. Updated to work with PHP 7.x (fixed mysqli escape strings), improved wording, admin settings styling. Unfortunately had to delete old translator files.
