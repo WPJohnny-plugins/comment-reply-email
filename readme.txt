@@ -51,7 +51,9 @@ With CSS of course! It shouldn't take any developer more than 15 minutes of time
 == Changelog ==
 
 = 1.0.2 =
-Fix PHP Deprecated method: Methods with the same name as their class will not be constructors in a future version of PHP.
+- Fix PHP Deprecated method: Methods with the same name as their class will not be constructors in a future version of PHP.
+- Fix headers already sent error & deprecated capability functions
+- Fix undefined variable error
 
 = 1.0.1 =
 

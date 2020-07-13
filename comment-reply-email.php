@@ -260,6 +260,7 @@ class comment_reply_email{
 	}
 
 	function displayMessage() {
+		$message = '';
 		if ( $this->message != '') {
 			$message = $this->message;
 			$status = $this->status;
