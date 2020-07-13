@@ -19,7 +19,7 @@ class comment_reply_email{
 	var $options_keys = array('mail_notify', 'mail_subject', 'mail_message', 'clean_option', 'dn_hide_note');
 	var $db_options = 'commentreplyemail';
 
-	function comment_reply_email(){
+	function __construct(){
 		$this->initoption();
 		$this->inithook();
 	}
