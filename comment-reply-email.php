@@ -277,7 +277,13 @@ class comment_reply_email{
 	}
 
 	function wpadmin(){
-		add_options_page(__('Comment Reply Email Option','comment-reply-email'), __('Comment Reply','comment-reply-email'), 5, __FILE__, array(&$this,'options_page'));
+		add_options_page(
+			__( 'Comment Reply Email Option', 'comment-reply-email' ),
+			__( 'Comment Reply', 'comment-reply-email' ),
+			'manage_options',
+			__FILE__,
+			array( $this, 'options_page' )
+		);
 	}
 
 	function options_page(){
@@ -365,4 +371,3 @@ class comment_reply_email{
 endif;
 
 $new_comment_reply_email = new comment_reply_email();
-?>
