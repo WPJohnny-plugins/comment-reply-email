@@ -2,7 +2,7 @@
 /* 
 Plugin Name: Comment Reply Email
 Plugin URI: https://wpjohnny.com/comment-reply-email
-Version: 1.0.0
+Version: 1.0.2
 Author: WPJohnny
 Description: Commenters can receive email notifications of replies to their comments.
 Author URI: https://wpjohnny.com
@@ -16,7 +16,7 @@ class comment_reply_email{
 	var $status = '';
 	var $message = '';
 	var $options = array();
-	var $options_keys = array('mail_notify', 'mail_subject', 'mail_message', 'clean_option', 'dn_hide_note');
+	var $options_keys = array('mail_notify', 'mail_subject', 'mail_message', 'checkbox_text', 'clean_option', 'dn_hide_note');
 	var $db_options = 'commentreplyemail';
 
 	function __construct(){
@@ -38,6 +38,8 @@ class comment_reply_email{
 			return 'no';
 		}elseif($key === 'dn_hide_note'){
 			return 'no';
+		}elseif($key === 'checkbox_text'){
+			return 'Email me when someone replies to my comment';
 		}else{
 			return false;
 		}
@@ -252,10 +254,12 @@ class comment_reply_email{
 	}
 
 	function addreplyidformfield(){
+		$label_text = ! empty( $this->options['checkbox_text'] ) ?  $this->options['checkbox_text'] : __('Email me when someone replies to my comment', 'comment-reply-email');
+
 		if($this->options['mail_notify'] === 'parent_check')
-			echo '<p><input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" value="comment_mail_notify" checked="checked" style="width: auto;" /><label for="comment_mail_notify" style="margin-left:7px;">' . __('Email me when someone replies to my comment', 'comment-reply-email') . '</label></p>';
+			echo '<p><input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" value="comment_mail_notify" checked="checked" style="width: auto;" /><label for="comment_mail_notify" style="margin-left:7px;">' . $label_text . '</label></p>';
 		elseif($this->options['mail_notify'] === 'parent_uncheck')
-			echo '<p><input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" value="comment_mail_notify" style="width: auto;" /><label for="comment_mail_notify" style="margin-left:7px;display: inline;position: relative;top: 2px;">' . __('Email me when someone replies to my comment', 'comment-reply-email') . '</label></p>';
+			echo '<p><input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" value="comment_mail_notify" style="width: auto;" /><label for="comment_mail_notify" style="margin-left:7px;display: inline;position: relative;top: 2px;">' . $label_text . '</label></p>';
 		else{}
 	}
 
@@ -338,6 +342,7 @@ class comment_reply_email{
 		<p>
 			<textarea name="mail_message" id="mail_message" cols="100%" rows="10" ><?php echo $this->options['mail_message']; ?></textarea>
 		</p>
+		<hr>
 		<p><?php _e('Use only TEXT, HTML, or the following tags:','comment-reply-email'); ?></p>
 		<ul>
 			<li><code>[pc_author]</code> for parent comment author</li>
@@ -352,6 +357,11 @@ class comment_reply_email{
 			<li><code>[blogurl]</code> for blog url</li>
 			<li><code>[postname]</code> for post name</li>
 		</ul>
+		<hr>
+		<h2 class="title"><?php _e('Checkbox text','comment-reply-email'); ?></h2>
+		<p>
+			<input type="text" name="checkbox_text" id="checkbox_text" value="<?php echo $this->options['checkbox_text']; ?>" size="80" />
+		</p>
 		<hr>
 		<h2 class="title"><?php _e('Plugin options','comment-reply-email'); ?></h2>
 		<p>

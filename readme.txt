@@ -3,8 +3,8 @@ Contributors: treeflips
 Donate link: https://www.paypal.me/wpjohnny
 Tags: comment, reply, email, notification
 Requires at least: 4.0
-Tested up to: 5.4.1
-Stable tag: 1.0
+Tested up to: 5.4.2
+Stable tag: 1.0.2
 License: GPL-2.0+
 
 Commenters can receive email notifications of replies to their comments.
@@ -51,6 +51,7 @@ With CSS of course! It shouldn't take any developer more than 15 minutes of time
 == Changelog ==
 
 = 1.0.2 =
+- Feature: Add option to change the checkbox text
 - Fix PHP Deprecated method: Methods with the same name as their class will not be constructors in a future version of PHP.
 - Fix headers already sent error & deprecated capability functions
 - Fix undefined variable error
