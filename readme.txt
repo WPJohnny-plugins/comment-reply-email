@@ -3,8 +3,8 @@ Contributors: treeflips
 Donate link: https://www.paypal.me/wpjohnny
 Tags: comment, reply, email, notification
 Requires at least: 4.0
-Tested up to: 5.4.2
-Stable tag: 1.0.1
+Tested up to: 5.5
+Stable tag: 1.0.2
 License: GPL-2.0+
 
 Commenters can receive email notifications of replies to their comments.
@@ -49,6 +49,9 @@ With CSS of course! It shouldn't take any developer more than 15 minutes of time
 3. Setting screen 2 of 2.
 
 == Changelog ==
+
+= 1.0.2 =
+- Rename class object to match main class
 
 = 1.0.1 =
 - Feature: Add option to change the checkbox text

@@ -2,7 +2,7 @@
 /* 
 Plugin Name: Comment Reply Email
 Plugin URI: https://wpjohnny.com/comment-reply-email
-Version: 1.0.1
+Version: 1.0.2
 Author: WPJohnny
 Description: Commenters can receive email notifications of replies to their comments.
 Author URI: https://wpjohnny.com
@@ -12,7 +12,7 @@ Text Domain:  comment-reply-email
 
 if(!class_exists('comment_reply_email')):
 class comment_reply_email{
-	var $version = '1.0.1';
+	var $version = '1.0.2';
 	var $status = '';
 	var $message = '';
 	var $options = array();
@@ -381,4 +381,4 @@ class comment_reply_email{
 }
 endif;
 
-$new_comment_reply_email = new comment_reply_email();
+$comment_reply_email = new comment_reply_email();
