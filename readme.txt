@@ -1,10 +1,10 @@
 ﻿=== Comment Reply Email ===
-Contributors: treeflips
+Contributors: treeflips, zeroneit
 Donate link: https://www.paypal.me/wpjohnny
 Tags: comment, reply, email, notification
 Requires at least: 4.0
-Tested up to: 5.5
-Stable tag: 1.0.2
+Tested up to: 6.8
+Stable tag: 1.5.1
 License: GPL-2.0+
 
 Commenters can receive email notifications of replies to their comments.
@@ -49,6 +49,31 @@ With CSS of course! It shouldn't take any developer more than 15 minutes of time
 3. Setting screen 2 of 2.
 
 == Changelog ==
+= 1.5.1 =
+- Updated for compatibility with latest WordPress version.
+
+= 1.5 =
+- Security patch is added.
+
+= 1.3 =
+- Comment form was not shown in a few options under "Send comment reply emails to commenters:". It was fixed.
+
+= 1.2 =
+- There was an issue with the HTML code view directly in email content starting from version 1.0.4. This problem arose during the implementation of a security update
+
+= 1.1 =
+- We updated description of each option more clearly in plugin setting page.
+- In frontend, checkbox option position was changed and placed before the form submit button.
+- Code files were cleaned up for professional.
+
+= 1.0.5 =
+- Warning Fix: Warning message "Undefined array key "comment_parent" in comment-reply-email.php file." is fixed. PHP 8.2 version is tested.
+
+= 1.0.4 =
+- Security Fix: This plugin was vulnerable to Cross Site Scripting (XSS) and Fixed on 08/29/2023. Thank Yebin Lee to report this security problem.
+
+= 1.0.3 =
+- PHP Warning Fix: Attempt to read property "comment_parent" on null object.
 
 = 1.0.2 =
 - Rename class object to match main class
