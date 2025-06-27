@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/wpjohnny
 Tags: comment, reply, email, notification
 Requires at least: 4.0
 Tested up to: 6.8
-Stable tag: 1.5.1
+Stable tag: 1.6.0
 License: GPL-2.0+
 
 Commenters can receive email notifications of replies to their comments.
@@ -20,6 +20,9 @@ I loved the original plugin [Comment Reply Notification](https://wordpress.org/p
 = Features: =
 * Feature modes - disabled, author/admin replies only, automatically, checkbox opt-in.
 * Edit email notification - subject and message.
+* [year] shortcode for dynamic year in email templates.
+* Developer-friendly hook for adding custom shortcodes.
+* Fixes issue with email notifications for moderated comments.
 * Can delete plugin options - after deactivation.
 
 == Installation ==
@@ -43,12 +46,29 @@ Not unless someone wanted to pay for my development time and costs. This was int
 = How do I style the text and checkbox? =
 With CSS of course! It shouldn't take any developer more than 15 minutes of time.
 
+= How do I add custom shortcodes to email templates? =
+Use the `comment_reply_email_content` filter in your theme's functions.php or custom plugin. Example:
+```
+add_filter('comment_reply_email_content', 'my_custom_shortcodes', 10, 2);
+function my_custom_shortcodes($content, $data) {
+    $content = str_replace('[my_custom_tag]', 'Custom Value', $content);
+    return $content;
+}
+```
+
 == Screenshots ==
 1. Checkbox opt-in on frontend.
 2. Settings screen 1 of 2.
 3. Setting screen 2 of 2.
 
 == Changelog ==
+= 1.6.0 =
+- FIX: Emails now send reliably for moderated comments after they are approved.
+- NEW: Added `[year]` shortcode for use in email templates.
+- NEW: Added `comment_reply_email_content` filter for developers to add custom shortcodes.
+- FIX: Corrected a bug that added extra slashes to the email message on save.
+- IMPROVEMENT: Enhanced comment status checking for better reliability.
+
 = 1.5.1 =
 - Updated for compatibility with latest WordPress version.
 
