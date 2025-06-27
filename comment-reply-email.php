@@ -1,10 +1,27 @@
 <?php
 /* 
 Plugin Name: Comment Reply Email
-Description: Commenters can receive email notifications of replies to their comments.
+Description: Sends email notifications to commenters when someone replies to their comment. A lightweight, no-fuss plugin with customizable templates and multiple notification modes.
+
+Key Features:
+- Multiple notification modes: disabled, admin-only replies, all replies, or opt-in checkbox.
+- Customizable email templates for subject and message.
+- [year] shortcode for dynamic year in emails.
+- Developer-friendly hook for adding custom shortcodes.
+- Fixes issue with email notifications for moderated comments.
+- Clean uninstall option.
+- Compatible with SMTP plugins for reliable email delivery.
+
+Recent Changes (v1.6.0):
+- FIX: Emails now send reliably for moderated comments after they are approved.
+- NEW: Added `[year]` shortcode for use in email templates.
+- NEW: Added `comment_reply_email_content` filter for developers to add custom shortcodes.
+- FIX: Corrected a bug that added extra slashes to the email message on save.
+
+Originally forked from Comment Reply Notification by @denishua.
 Plugin URI: https://wpjohnny.com/comment-reply-email
-Version: 1.5.1
-Author: <a href="https://wpjohnny.com">WPJohnny</a>, <a href="https://profiles.wordpress.org/zeroneit/">zerOneIT</a>
+Version: 1.6.0
+Author: <a href="https://wpjohnny.com">WPJohnny</a>
 Donate link: https://www.paypal.me/wpjohnny
 Text Domain:  comment-reply-email
 License:      GPL v2 or later
@@ -98,13 +115,22 @@ if(!class_exists('CommentReplyEmail')):
 
 	    function updateStatus($id,$status){
 		    $id = (int) $id;
+		    
+		    // Get fresh comment data
+		    $comment = get_comment($id);
+		    if (!$comment) {
+			    return $id;
+		    }
+
+		    // Update global comment object
 		    if(isset($GLOBALS['comment']) && ($GLOBALS['comment']->comment_ID == $id)){
 			    unset($GLOBALS['comment']);
-			    $comment = get_comment($id);
 			    $GLOBALS['comment'] = $comment;
 		    }
 
-		    if ($status== 'approve' && isset($comment) && intval($comment->comment_parent) > 0){
+		    if ($status == 'approve' && intval($comment->comment_parent) > 0){
+			    // Give WordPress a moment to update the comment status
+			    sleep(1);
 			    $this->sendMail($id,$comment->comment_parent,$comment->comment_post_ID);
 		    }
 
@@ -162,28 +188,20 @@ if(!class_exists('CommentReplyEmail')):
 	    function sendMail($id,$parentId,$commentPostId){
 		    global $wpdb, $userId, $userdata;
 
+		    // Get fresh comment data
+		    $currentComment = get_comment($id);
+		    if(empty($currentComment)){
+			    return false;
+		    }
+		    
 		    $post = get_post($commentPostId);
-
 		    if(empty($post)){
 			    unset($post);
 			    return false;
 		    }
 
-		    if($this->options['mail_notify'] == 'admin'){
-			    $cap = $wpdb->prefix . 'capabilities';
-			    if((strtolower((string) array_shift(array_keys((array)($userdata->$cap)))) !== 'administrator') && ((int)$post->post_author !== (int)$userId)){
-				    unset($post, $cap);
-				    return false;
-			    }
-		    }
-		    
 		    $parentComment = get_comment($parentId);
 		    if(empty($parentComment)){
-			    unset($parentComment);
-			    return false;
-		    }
-
-		    if(intval($parentComment->comment_mail_notify) === 0 && ($this->options['mail_notify'] === 'parent_uncheck' || $this->options['mail_notify'] === 'parent_check')){
 			    unset($parentComment);
 			    return false;
 		    }
@@ -195,34 +213,33 @@ if(!class_exists('CommentReplyEmail')):
 			    return false;
 		    }
 
-		    $currentComment = get_comment($id);
-		    if(empty($currentComment)){
+		    if ($currentComment->comment_approved != '1') {
 			    unset($parentComment, $currentComment);
 			    return false;
 		    }
 
-		    if ($currentComment->comment_approved != '1')
-		    {
-			    unset($parentComment, $currentComment);
-			    return false;
-		    }
-
-		    if($parentCommentAuthorEmail === trim($currentComment->comment_author_email)){ //Do not send email if you reply to your own comments
+		    if($parentCommentAuthorEmail === trim($currentComment->comment_author_email)){
 			    unset($parentComment,$currentComment);
 			    return false;
 		    }
-
+		    
 		    $mailSubject = strip_tags($this->options['mail_subject']);
 		    $mailSubject = str_replace('[blogname]', get_option('blogname'), $mailSubject);
 		    $mailSubject = str_replace('[postname]', $post->post_title, $mailSubject);
 
 		    $mailContent = $this->options['mail_message'];
-		    $mailContent = str_replace('[pc_date]', mysql2date( get_option('date_format'), $parentComment->comment_date), $mailContent);
+		    
+		    // Add current year tag
+		    $currentYear = date('Y');
+		    $mailContent = str_replace('[year]', $currentYear, $mailContent);
+
+		    // Replace default tags
+		    $mailContent = str_replace('[pc_date]', mysql2date(get_option('date_format'), $parentComment->comment_date), $mailContent);
 		    $mailContent = str_replace('[pc_content]', $parentComment->comment_content, $mailContent);
 		    $mailContent = str_replace('[pc_author]', $parentComment->comment_author, $mailContent);
 		    
 		    $mailContent = str_replace('[cc_author]', $currentComment->comment_author, $mailContent);
-		    $mailContent = str_replace('[cc_date]', mysql2date( get_option('date_format'), $currentComment->comment_date), $mailContent);
+		    $mailContent = str_replace('[cc_date]', mysql2date(get_option('date_format'), $currentComment->comment_date), $mailContent);
 		    $mailContent = str_replace('[cc_url]', $currentComment->comment_url, $mailContent);
 		    $mailContent = str_replace('[cc_content]', $currentComment->comment_content, $mailContent);
 
@@ -230,26 +247,27 @@ if(!class_exists('CommentReplyEmail')):
 		    $mailContent = str_replace('[blogurl]', get_option('home'), $mailContent);
 		    $mailContent = str_replace('[postname]', $post->post_title, $mailContent);
 
-		    $permalink =  get_comment_link($parentId);
-
+		    $permalink = get_comment_link($parentId);
 		    $mailContent = str_replace('[commentlink]', $permalink, $mailContent);
+
+		    // Allow custom shortcodes in email content
+		    $mailContent = apply_filters('comment_reply_email_content', $mailContent, array(
+			    'current_comment' => $currentComment,
+			    'parent_comment' => $parentComment,
+			    'post' => $post
+		    ));
 
 		    $mailMeta = 'no-reply@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
 		    $from = "From: \"".get_option('blogname')."\" <$mailMeta>";
-
 		    $mailHeader = "$from\nContent-Type: text/html; charset=" . get_option('blog_charset') . "\n";
 
-		    unset($mailMeta, $from, $post, $parentComment, $currentComment, $cap, $permalink);
-		    
 		    $mailContent = convert_smilies($mailContent);
-
 		    $mailContent = apply_filters('comment_notification_text', $mailContent, $id);
 		    $mailSubject = apply_filters('comment_notification_subject', $mailSubject, $id);
 		    $mailHeader = apply_filters('comment_notification_headers', $mailHeader, $id);
 
-		    wp_mail($parentCommentAuthorEmail, $mailSubject, $mailContent, $mailHeader);
+		    $mailResult = wp_mail($parentCommentAuthorEmail, $mailSubject, $mailContent, $mailHeader);
 		    unset($mailSubject,$parentCommentAuthorEmail,$mailContent, $mailHeader);
-		    
 		    return true;
 	    }
 
@@ -316,9 +334,9 @@ if(!class_exists('CommentReplyEmail')):
 		    if (isset($_POST['updateoptions']) && check_admin_referer('sec-check-nonce', '_wpnonce')) {
 		        foreach ((array) $this->options as $key => $oldvalue) {
 		        	if ($key == 'mail_message') {
-		        		$this->options[$key] = isset($_POST[$key]) ? $this->custom_sanitize_html($_POST[$key]) : $this->defaultOption($key);	
+		        		$this->options[$key] = isset($_POST[$key]) ? $this->custom_sanitize_html(wp_unslash($_POST[$key])) : $this->defaultOption($key);	
 		        	} else {
-		        		$this->options[$key] = isset($_POST[$key]) ? sanitize_text_field($_POST[$key]) : $this->defaultOption($key);	
+		        		$this->options[$key] = isset($_POST[$key]) ? sanitize_text_field(wp_unslash($_POST[$key])) : $this->defaultOption($key);	
 		        	}
 		        }
 		        update_option($this->dbOptions, $this->options);
@@ -382,7 +400,18 @@ if(!class_exists('CommentReplyEmail')):
 			            <li><code>[blogname]</code> for blog name</li>
 			            <li><code>[blogurl]</code> for blog url</li>
 			            <li><code>[postname]</code> for post name</li>
+			            <li><code>[year]</code> for current year</li>
 		            </ul>
+		            <hr>
+		            <p><strong>Developer Note:</strong> You can add custom shortcodes using the <code>comment_reply_email_content</code> filter. Example:</p>
+		            <pre>
+add_filter('comment_reply_email_content', 'my_custom_email_shortcodes', 10, 2);
+function my_custom_email_shortcodes($content, $data) {
+    // Add your custom shortcode
+    $content = str_replace('[my_custom_tag]', 'Custom Value', $content);
+    return $content;
+}
+		            </pre>
 		            <hr>
 		            <h2 class="title"><?php _e('Checkbox text','comment-reply-email'); ?></h2>
 		            <p>
